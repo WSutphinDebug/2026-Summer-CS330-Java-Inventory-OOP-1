@@ -1,5 +1,6 @@
 package edu.odu.cs.cs330.items;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -37,6 +38,7 @@ public class Consumable extends Item {
     public Consumable()
     {
         super("[Placeholder]", true);
+        
 
         this.effect = "";
         this.uses   = 0;
@@ -51,7 +53,10 @@ public class Consumable extends Item {
     {
         // Complete this function.
         // Update/replace the call to super
-        super("[Placeholder]", true);
+        super(src.name, true);
+        
+        this.effect = src.effect;
+        this.uses = src.uses;
     }
 
     /**
@@ -101,6 +106,8 @@ public class Consumable extends Item {
     public void read(Scanner snr)
     {
         super.name    = snr.next();
+        this.effect = snr.next();
+        this.uses = snr.nextInt();
 
         // Complete this function.
     }
@@ -114,6 +121,10 @@ public class Consumable extends Item {
         Consumable cpy = new Consumable();
 
         // Complete this function.
+        cpy.name = super.name;
+        cpy.stackable = super.stackable;
+        cpy.effect = this.effect;
+        cpy.uses = this.uses;
 
         return cpy;
     }
@@ -126,13 +137,26 @@ public class Consumable extends Item {
     @Override
     public boolean equals(Object rhs)
     {
+       
+
         if (!(rhs instanceof Consumable)) {
             return false;
         }
-
+        
         Consumable rhsItem = (Consumable) rhs;
+        
+        //use .equals to compare and confirm that the strings match, not "!=" so to prevent comparing memory addresses and causing consumables to be considered different even with the same name and effect (which prevents stacking)
+        if(!(this.name.equals(rhsItem.name))){
+            return false;
+        }
+        else if(!(this.effect.equals(rhsItem.effect))){
+            return false;
+        }
+
+        
 
         // Use the provided return as a start/hint
+        
         return this.name.equals(rhsItem.name);
     }
 
@@ -146,7 +170,9 @@ public class Consumable extends Item {
     public int hashCode()
     {
         // Use the provided return as a start/hint
-        return this.name.hashCode();
+        //return this.name.hashcode
+        return Objects.hash(this.name, this.effect);
+        
     }
 
     /**
@@ -159,6 +185,8 @@ public class Consumable extends Item {
         return String.join(
             System.lineSeparator(),
             String.format("  Nme: %s", super.getName()),
+            String.format("  Eft: %s", this.getEffect()),
+            String.format("  Use: %d", this.getNumberOfUses()),
             ""
         );
     }

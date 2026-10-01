@@ -1,5 +1,6 @@
 package edu.odu.cs.cs330.items;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -31,6 +32,7 @@ public class Armour extends Equippable {
     public Armour()
     {
         super();
+        this.durability = 0;
 
         this.defense = 0;
     }
@@ -42,7 +44,14 @@ public class Armour extends Equippable {
      */
     public Armour(Armour src)
     {
-        // Complete this function.
+        //creates a new armour object that copies the supplied armours traits
+        this.name = src.name;
+        this.durability = src.durability;
+        this.material = src.material;
+        this.modifier = src.modifier;
+        this.modifierLevel = src.modifierLevel;
+        this.element = src.element;
+        this.defense = src.defense;
     }
 
     /**
@@ -71,7 +80,16 @@ public class Armour extends Equippable {
     @Override
     public void read(Scanner snr)
     {
+        //use the scanner to read through each trait of Armour
         super.name    = snr.next();
+        this.material = snr.next();
+        this.durability = snr.nextInt();
+        this.defense = snr.nextInt();
+        this.modifier = snr.next();
+        this.modifierLevel = snr.nextInt();
+        this.element = snr.next();
+        
+
 
         // Complete this function.
     }
@@ -85,6 +103,15 @@ public class Armour extends Equippable {
         Armour cpy = new Armour();
 
         // Complete this function.
+        //copy all of current armour traits into the copy armour and return it
+        cpy.name = super.name;
+        cpy.durability = this.durability;
+        cpy.material = this.material;
+        cpy.modifier = this.modifier;
+        cpy.modifierLevel = this.modifierLevel;
+        cpy.element = this.element;
+        cpy.defense = this.defense;
+
 
         return cpy;
     }
@@ -102,11 +129,27 @@ public class Armour extends Equippable {
             return false;
         }
 
+        Armour lhs = this;
         Armour rhsItem = (Armour) rhs;
 
+
         // Complete this function.
-        // Remove the placeholder return
-        return false;
+        //if the armour names, materials, modifiers, or elements are different, return false
+        if(!(lhs.name.equals(rhsItem.name))){
+            return false;
+        }
+        else if(!(lhs.material.equals(rhsItem.material))){
+            return false;
+        }
+        else if(!(lhs.modifier.equals(rhsItem.modifier))){
+            return false;
+        }
+        else if(!(lhs.element.equals(rhsItem.element))){
+            return false;
+        }
+
+        // updated to return that lhs is equals to rhs
+        return lhs.name.equals(rhsItem.name);
     }
 
     /**
@@ -118,7 +161,7 @@ public class Armour extends Equippable {
     {
         // Complete this function.
         // Remove the placeholder return
-        return -1;
+        return Objects.hash(this.name, this.material, this.modifier, this.element);
     }
 
     /**
@@ -132,6 +175,11 @@ public class Armour extends Equippable {
         return String.join(
             System.lineSeparator(),
             String.format("  Nme: %s", super.getName()),
+            String.format("  Dur: %d", this.getDurability()),
+            String.format("  Def: %d", this.getDefense()),
+            String.format("  Mtl: %s", this.getMaterial()),
+            String.format("  Mdr: %s (Lvl %d)", this.getModifier(), this.getModifierLevel()),
+            String.format("  Emt: %s", this.getElement()),
             ""
         );
     }
